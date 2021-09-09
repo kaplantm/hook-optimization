@@ -2,7 +2,9 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import './App.css';
 // import MarkdownPageOptimized from './pages/markdown/optimized';
-import GraphPageOptimized from './pages/graphs/optimized';
+import GraphPage from './pages/graph';
+import GraphPageOptimized from './pages/graph/optimized';
+import GraphPagePartiallyOptimized from './pages/graph/graph-partially-optimized';
 
 function App(): React.ReactElement {
   return (
@@ -12,21 +14,32 @@ function App(): React.ReactElement {
           <nav>
             <ul>
               <li>
-                <Link to="/">Home</Link>
+                <Link to="/graph">Graph NOT Optimized</Link>
               </li>
               <li>
-                <Link to="/about">About</Link>
+                <Link to="/graph-partially-optimized">
+                  Graph Partially Optimized
+                </Link>
               </li>
               <li>
-                <Link to="/users">Users</Link>
+                <Link to="/graph-optimized">Graph Optimized</Link>
               </li>
             </ul>
           </nav>
 
           {/* TODO: now not optimized version, fix nav */}
           <Switch>
+            <Route path="/graph">
+              <GraphPage width={800} height={400} />
+            </Route>
+            <Route path="/graph-partially-optimized">
+              <GraphPagePartiallyOptimized width={800} height={400} />
+            </Route>
+            <Route path="/graph-optimized">
+              <GraphPageOptimized width={800} height={400} />
+            </Route>
             <Route path="/">
-              <GraphPageOptimized />
+              <GraphPageOptimized width={800} height={400} />
             </Route>
           </Switch>
         </div>
