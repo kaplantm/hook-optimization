@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import './App.css';
-import DownloadPageOptimized from './pages/download/optmized';
+import MarkdownPageOptimized from './pages/markdown/optimized';
 
 function App(): React.ReactElement {
   return (
@@ -22,14 +22,13 @@ function App(): React.ReactElement {
             </ul>
           </nav>
 
-          {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
+          {/* TODO: now not optimized version, fix nav */}
           <Switch>
             <Route path="/downloadOptimized">
-              <DownloadPageOptimized />
+              <MarkdownPageOptimized />
             </Route>
             <Route path="/">
-              <DownloadPageOptimized />
+              <MarkdownPageOptimized />
             </Route>
           </Switch>
         </div>
