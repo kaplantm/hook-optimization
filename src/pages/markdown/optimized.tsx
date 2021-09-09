@@ -14,6 +14,7 @@ import {
   Slider,
   CircularProgress,
   Paper,
+  TextField,
 } from '@material-ui/core';
 import ReactMarkdown from 'react-markdown';
 import { VolumeDown, VolumeUp } from '@material-ui/icons';
@@ -27,15 +28,14 @@ const MarkdownPageOptimized = () => {
     undefined
   ); // TODO: now demo disallowed character (prev)
   const [sliderValue, setSliderValue] = React.useState(30);
-  const debouncedInput = useDebounce(markdownInput, 500);
 
   useEffect(() => {
     loadMarkdownFromSaved(setMarkdownInput);
   }, []);
 
   useEffect(() => {
-    saveMarkdown(debouncedInput);
-  }, [debouncedInput]);
+    saveMarkdown(markdownInput);
+  }, [markdownInput]);
 
   if (markdownInput === undefined) {
     return (
@@ -78,18 +78,19 @@ const MarkdownPageOptimized = () => {
 
       <Grid container spacing={3} justifyContent="space-between">
         <Grid item xs={6}>
-          <div className={classes.gridContainer}>
-            <textarea
-              onChange={handleMarkdownInputChange}
-              value={markdownInput}
-            />
-          </div>
+          <TextField
+            multiline
+            onChange={handleMarkdownInputChange}
+            value={markdownInput}
+            variant="outlined"
+            fullWidth
+          />
         </Grid>
         <Grid item xs={6}>
           <div className={classes.gridContainer}>
             {/* this is the suggested approach in the lib docs */}
             {/* eslint-disable-next-line react/no-children-prop */}
-            <ReactMarkdown children={debouncedInput || ''} />
+            <ReactMarkdown children={markdownInput || ''} />
           </div>
         </Grid>
       </Grid>

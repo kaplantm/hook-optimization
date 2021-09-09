@@ -1,7 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import './App.css';
-import MarkdownPageOptimized from './pages/markdown/optimized';
+// import MarkdownPageOptimized from './pages/markdown/optimized';
+import GraphPageOptimized from './pages/graphs/optimized';
 
 function App(): React.ReactElement {
   return (
@@ -24,11 +25,8 @@ function App(): React.ReactElement {
 
           {/* TODO: now not optimized version, fix nav */}
           <Switch>
-            <Route path="/downloadOptimized">
-              <MarkdownPageOptimized />
-            </Route>
             <Route path="/">
-              <MarkdownPageOptimized />
+              <GraphPageOptimized />
             </Route>
           </Switch>
         </div>
