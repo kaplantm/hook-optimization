@@ -2,11 +2,13 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Box, Button, Container, LinearProgress } from '@material-ui/core';
 import axios, { Canceler } from 'axios';
 import { downloadWithProgress } from '../../utils/axios-utils';
+import BuildingAnimation from '../../components/BuildingAnimation';
 
 const roundToNearest = 1;
 
 const DownloadPageOptimized = () => {
   const [progress, setProgress] = useState(0);
+  const [playing, setPlaying] = useState(false);
   // const [cancel, setCancel] = useState<Canceler | null>(null);
   const cancelRef = useRef<Canceler | null>(null);
   const [hasRequestedDownload, setHasRequestedDownload] = useState(false);
@@ -68,9 +70,13 @@ const DownloadPageOptimized = () => {
     setHasRequestedDownload(true);
   };
 
+  const segments: [number, number][] = [[0, 50]];
   return (
     <Container>
-      <h1>HasRequestedDownload: {hasRequestedDownload ? 'true' : 'false'}</h1>
+      <Button onClick={() => setPlaying(prev => !prev)}>
+        {playing ? 'pause' : 'play'}
+      </Button>
+      {/* <h1>HasRequestedDownload: {hasRequestedDownload ? 'true' : 'false'}</h1>
       <h2>Progress: {progress}</h2>
       <LinearProgress value={progress} variant="determinate" />
       <Button onClick={onClickDownload} variant="contained" color="primary">
@@ -83,7 +89,8 @@ const DownloadPageOptimized = () => {
         disabled={!hasRequestedDownload}
       >
         Cancel File Download
-      </Button>
+      </Button> */}
+      <BuildingAnimation play={playing} segments={segments} />
     </Container>
   );
 };
