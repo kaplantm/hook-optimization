@@ -1,19 +1,17 @@
 import React, { memo } from 'react';
 import { AreaClosed } from '@vx/shape';
-import appleStock, { AppleStock } from '@vx/mock-data/lib/mocks/appleStock';
+import { AppleStock } from '@vx/mock-data/lib/mocks/appleStock';
 import { curveMonotoneX } from '@vx/curve';
 import { GridRows, GridColumns } from '@vx/grid';
 import { LinearGradient } from '@vx/gradient';
-
-const stock = appleStock;
-export const background = '#3b6978';
-export const background2 = '#204051';
-export const accentColor = '#edffea';
-export const accentColorDark = '#75daad';
-
-// accessors
-const getDate = (d: AppleStock) => new Date(d.date);
-const getStockValue = (d: AppleStock) => d.close;
+import {
+  getStockValue,
+  getDate,
+  stock,
+  accentColor,
+  background,
+  background2,
+} from './shared';
 
 export type AreaProps = {
   width: number;

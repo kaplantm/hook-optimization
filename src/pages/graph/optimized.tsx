@@ -1,6 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
 import { Bar, Line } from '@vx/shape';
-import appleStock, { AppleStock } from '@vx/mock-data/lib/mocks/appleStock';
 import { scaleTime, scaleLinear } from '@vx/scale';
 import {
   withTooltip,
@@ -10,39 +9,20 @@ import {
 } from '@vx/tooltip';
 import { WithTooltipProvidedProps } from '@vx/tooltip/lib/enhancers/withTooltip';
 import { localPoint } from '@vx/event';
-import { max, extent, bisector } from 'd3-array';
-import { timeFormat } from 'd3-time-format';
+import { max, extent } from 'd3-array';
 import GraphOnly from './graph';
-
-type TooltipData = AppleStock;
-
-const stock = appleStock;
-export const background = '#3b6978';
-export const background2 = '#204051';
-export const accentColor = '#edffea';
-export const accentColorDark = '#75daad';
-const tooltipStyles = {
-  ...defaultStyles,
-  background,
-  border: '1px solid white',
-  color: 'white',
-};
-
-// util
-const formatDate = timeFormat("%b %d, '%y");
-
-// accessors
-const getDate = (d: AppleStock) => new Date(d.date);
-const getStockValue = (d: AppleStock) => d.close;
-const bisectDate = bisector<AppleStock, Date>(d => new Date(d.date)).left;
-
-export type AreaProps = {
-  width: number;
-  height: number;
-  margin?: { top: number; right: number; bottom: number; left: number };
-};
-
-const marginDefault = { top: 0, right: 0, bottom: 0, left: 0 };
+import {
+  TooltipData,
+  AreaProps,
+  getStockValue,
+  tooltipStyles,
+  formatDate,
+  getDate,
+  stock,
+  accentColorDark,
+  marginDefault,
+  bisectDate,
+} from './shared';
 
 export default withTooltip<AreaProps, TooltipData>(
   ({
