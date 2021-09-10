@@ -7,17 +7,19 @@ import './App.css';
 import GraphPage from './pages/graph';
 import GraphPageOptimized from './pages/graph/optimized';
 import GraphPagePartiallyOptimized from './pages/graph/graph-partially-optimized';
-import { getStockValue, stock } from './pages/graph/shared';
+import { getStockValue } from './pages/graph/shared';
 import { sleep } from './utils/mock-utils';
 
 // Graph component base source: https://vx-demo.vercel.app/areas
 
 function App(): React.ReactElement {
-  const [value, setValue] = useState<number | null>(null);
+  const [uselessValue, setUselessValue] = useState<number | null>(null);
+  const [maxYear, setMaxYear] = useState<number>(2012);
+  const [minYear, setMinYear] = useState<number>(2007);
 
   const handleValueChange = useCallback(
     (e: ChangeEvent<any> | null, newValue: number | number[]) => {
-      setValue(newValue as number);
+      setUselessValue(newValue as number);
     },
     []
   );
@@ -38,6 +40,24 @@ function App(): React.ReactElement {
     }
     loadFromSaved();
   }, [handleValueChange]);
+
+  const handleMaxYearChange = (
+    e: ChangeEvent<any>,
+    newValue: number | number[]
+  ) => {
+    if (newValue > minYear) {
+      setMaxYear(newValue as number);
+    }
+  };
+
+  const handleMinYearChange = (
+    e: ChangeEvent<any>,
+    newValue: number | number[]
+  ) => {
+    if (newValue < maxYear) {
+      setMinYear(newValue as number);
+    }
+  };
 
   return (
     <Container maxWidth="md" className="App">
@@ -60,32 +80,71 @@ function App(): React.ReactElement {
           </nav>
           <Box border="1px solid grey" p={3} m={6}>
             <Slider
-              value={value || 0}
-              disabled={value === null}
+              value={uselessValue || 0}
+              disabled={uselessValue === null}
               onChange={handleValueChange}
               aria-labelledby="continuous-slider"
-              max={max(stock, getStockValue) || 0}
-              min={min(stock, getStockValue) || 0}
               valueLabelDisplay="on"
               step={0.25}
-            />{' '}
+            />
             <Typography>
               This slider is unrelated to the graphs. It does nothing!
             </Typography>
           </Box>
-
+          <Box border="1px solid dodgerblue" p={3} m={6}>
+            <Slider
+              value={minYear}
+              onChange={handleMinYearChange}
+              aria-labelledby="continuous-slider"
+              max={2012}
+              min={2007}
+              valueLabelDisplay="on"
+            />
+            <Typography>Min year</Typography>
+          </Box>
+          <Box border="1px solid dodgerblue" p={3} m={6}>
+            <Slider
+              value={maxYear}
+              onChange={handleMaxYearChange}
+              aria-labelledby="continuous-slider"
+              max={2012}
+              min={2007}
+              valueLabelDisplay="on"
+            />
+            <Typography>Max year</Typography>
+          </Box>
           <Switch>
             <Route path="/graph">
-              <GraphPage width={800} height={400} />
+              <GraphPage
+                width={800}
+                height={400}
+                startYear={minYear}
+                endYear={maxYear}
+              />
             </Route>
             <Route path="/graph-partially-optimized">
-              <GraphPagePartiallyOptimized width={800} height={400} />
+              <GraphPagePartiallyOptimized
+                width={800}
+                height={400}
+                startYear={minYear}
+                endYear={maxYear}
+              />
             </Route>
             <Route path="/graph-optimized">
-              <GraphPageOptimized width={800} height={400} />
+              <GraphPageOptimized
+                width={800}
+                height={400}
+                startYear={minYear}
+                endYear={maxYear}
+              />
             </Route>
             <Route path="/">
-              <GraphPageOptimized width={800} height={400} />
+              <GraphPageOptimized
+                width={800}
+                height={400}
+                startYear={minYear}
+                endYear={maxYear}
+              />
             </Route>
           </Switch>
         </div>

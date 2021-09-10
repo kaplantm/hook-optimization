@@ -13,6 +13,7 @@ import {
 import { WithTooltipProvidedProps } from '@vx/tooltip/lib/enhancers/withTooltip';
 import { localPoint } from '@vx/event';
 import { LinearGradient } from '@vx/gradient';
+import { appleStock } from '@vx/mock-data';
 import { max, extent } from 'd3-array';
 import {
   TooltipData,
@@ -21,7 +22,6 @@ import {
   tooltipStyles,
   formatDate,
   getDate,
-  stock,
   accentColor,
   accentColorDark,
   background,
@@ -39,8 +39,19 @@ export default withTooltip<AreaProps, TooltipData>(
     tooltipData,
     tooltipTop = 0,
     tooltipLeft = 0,
+    startYear,
+    endYear,
   }: AreaProps & WithTooltipProvidedProps<TooltipData>) => {
     if (width < 10) return null;
+
+    const stock = useMemo(() => {
+      const startDate = new Date(startYear, 0);
+      const endDate = new Date(endYear, 0);
+      const startIndex = bisectDate(appleStock, startDate);
+      const endIndex = bisectDate(appleStock, endDate);
+      const limited = appleStock.slice(startIndex, endIndex + 1);
+      return limited;
+    }, [startYear, endYear]);
 
     // bounds
     const innerWidth = width - margin.left - margin.right;
@@ -53,7 +64,7 @@ export default withTooltip<AreaProps, TooltipData>(
           range: [margin.left, innerWidth + margin.left],
           domain: extent(stock, getDate) as [Date, Date],
         }),
-      [innerWidth, margin.left]
+      [innerWidth, margin.left, stock]
     );
     const stockValueScale = useMemo(
       () =>
@@ -62,7 +73,7 @@ export default withTooltip<AreaProps, TooltipData>(
           domain: [0, (max(stock, getStockValue) || 0) + innerHeight / 3],
           nice: true,
         }),
-      [margin.top, innerHeight]
+      [margin.top, innerHeight, stock]
     );
 
     // tooltip handler
@@ -91,7 +102,7 @@ export default withTooltip<AreaProps, TooltipData>(
           tooltipTop: stockValueScale(getStockValue(d)),
         });
       },
-      [showTooltip, stockValueScale, dateScale]
+      [showTooltip, stockValueScale, dateScale, stock]
     );
 
     console.log('*** PartiallyOptimized render');

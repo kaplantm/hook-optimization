@@ -1,5 +1,4 @@
-import React, { useMemo, useCallback, useState, memo } from 'react';
-import { Typography } from '@material-ui/core';
+import React, { useMemo, useCallback, memo } from 'react';
 import { Bar, Line } from '@vx/shape';
 import { scaleTime, scaleLinear } from '@vx/scale';
 import {
@@ -11,6 +10,7 @@ import {
 import { WithTooltipProvidedProps } from '@vx/tooltip/lib/enhancers/withTooltip';
 import { localPoint } from '@vx/event';
 import { max, extent } from 'd3-array';
+import { appleStock } from '@vx/mock-data';
 import GraphOnly from './graph';
 import {
   TooltipData,
@@ -19,7 +19,6 @@ import {
   tooltipStyles,
   formatDate,
   getDate,
-  stock,
   accentColorDark,
   marginDefault,
   bisectDate,
@@ -37,7 +36,22 @@ const OptimizedComponent = withTooltip<AreaProps, TooltipData>(
     tooltipData,
     tooltipTop = 0,
     tooltipLeft = 0,
+    startYear,
+    endYear,
   }: AreaProps & WithTooltipProvidedProps<TooltipData>) => {
+    const startIndex = useMemo(() => {
+      const startDate = new Date(startYear, 0);
+      return bisectDate(appleStock, startDate);
+    }, [startYear]);
+    const endIndex = useMemo(() => {
+      const endDate = new Date(endYear + 1, 0);
+      return bisectDate(appleStock, endDate);
+    }, [endYear]);
+    const stock = useMemo(() => {
+      const limited = appleStock.slice(startIndex, endIndex + 1);
+      return limited;
+    }, [startIndex, endIndex]);
+
     if (width < 10) return null;
 
     // bounds
@@ -51,7 +65,7 @@ const OptimizedComponent = withTooltip<AreaProps, TooltipData>(
           range: [margin.left, innerWidth + margin.left],
           domain: extent(stock, getDate) as [Date, Date],
         }),
-      [innerWidth, margin.left]
+      [innerWidth, margin.left, stock]
     );
     const stockValueScale = useMemo(
       () =>
@@ -60,7 +74,7 @@ const OptimizedComponent = withTooltip<AreaProps, TooltipData>(
           domain: [0, (max(stock, getStockValue) || 0) + innerHeight / 3],
           nice: true,
         }),
-      [margin.top, innerHeight]
+      [margin.top, innerHeight, stock]
     );
 
     // tooltip handler
@@ -89,7 +103,7 @@ const OptimizedComponent = withTooltip<AreaProps, TooltipData>(
           tooltipTop: stockValueScale(getStockValue(d)),
         });
       },
-      [showTooltip, stockValueScale, dateScale]
+      [showTooltip, stockValueScale, dateScale, stock]
     );
 
     console.log('*** Optimized render');
@@ -105,6 +119,7 @@ const OptimizedComponent = withTooltip<AreaProps, TooltipData>(
             innerWidth={innerWidth}
             dateScale={dateScale}
             innerHeight={innerHeight}
+            stock={stock}
           />
           <Bar
             x={margin.left}

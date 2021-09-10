@@ -13,6 +13,7 @@ import {
 import { WithTooltipProvidedProps } from '@vx/tooltip/lib/enhancers/withTooltip';
 import { localPoint } from '@vx/event';
 import { LinearGradient } from '@vx/gradient';
+import { appleStock } from '@vx/mock-data';
 import { max, extent } from 'd3-array';
 import {
   TooltipData,
@@ -21,7 +22,6 @@ import {
   tooltipStyles,
   formatDate,
   getDate,
-  stock,
   accentColor,
   accentColorDark,
   background,
@@ -39,8 +39,16 @@ export default withTooltip<AreaProps, TooltipData>(
     tooltipData,
     tooltipTop = 0,
     tooltipLeft = 0,
+    startYear,
+    endYear,
   }: AreaProps & WithTooltipProvidedProps<TooltipData>) => {
     if (width < 10) return null;
+
+    const startDate = new Date(startYear, 0);
+    const endDate = new Date(endYear, 0);
+    const startIndex = bisectDate(appleStock, startDate);
+    const endIndex = bisectDate(appleStock, endDate);
+    const stock = appleStock.slice(startIndex, endIndex + 1);
 
     // bounds
     const innerWidth = width - margin.left - margin.right;

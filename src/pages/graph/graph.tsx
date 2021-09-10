@@ -7,7 +7,6 @@ import { LinearGradient } from '@vx/gradient';
 import {
   getStockValue,
   getDate,
-  stock,
   accentColor,
   background,
   background2,
@@ -22,6 +21,7 @@ export type AreaProps = {
   innerWidth: any;
   dateScale: any;
   innerHeight: any;
+  stock: any;
 };
 
 const GraphOnlyComponent: React.FunctionComponent<AreaProps> = ({
@@ -32,8 +32,9 @@ const GraphOnlyComponent: React.FunctionComponent<AreaProps> = ({
   innerWidth,
   dateScale,
   innerHeight,
+  stock,
 }) => {
-  console.log('*** GraphOnlyComponent render');
+  console.log('*** Optimized GraphOnlyComponent render');
   return (
     <>
       <rect
