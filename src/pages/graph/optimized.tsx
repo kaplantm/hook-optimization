@@ -1,4 +1,5 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback, useState, memo } from 'react';
+import { Typography } from '@material-ui/core';
 import { Bar, Line } from '@vx/shape';
 import { scaleTime, scaleLinear } from '@vx/scale';
 import {
@@ -24,7 +25,7 @@ import {
   bisectDate,
 } from './shared';
 
-export default withTooltip<AreaProps, TooltipData>(
+const OptimizedComponent = withTooltip<AreaProps, TooltipData>(
   ({
     width,
     height,
@@ -93,7 +94,7 @@ export default withTooltip<AreaProps, TooltipData>(
 
     console.log('*** Optimized render');
     return (
-      <div>
+      <>
         <h1>Optimized</h1>
         <svg width={width} height={height}>
           <GraphOnly
@@ -174,7 +175,10 @@ export default withTooltip<AreaProps, TooltipData>(
             </Tooltip>
           </div>
         )}
-      </div>
+      </>
     );
   }
 );
+
+const Optimized = memo(OptimizedComponent);
+export default Optimized;

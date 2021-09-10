@@ -10,7 +10,7 @@ import {
   slateGrey,
   paleRed,
 } from '../../constants/colors';
-import { formatCommas } from '../../utils/string-utils';
+import { formatCommas } from '../../utils/number-utils';
 import { DonationHistoryType } from '../../types';
 import { getDate, getTotal } from './helpers';
 

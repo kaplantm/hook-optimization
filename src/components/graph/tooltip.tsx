@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Tooltip } from '@material-ui/core';
-import { formatCommas } from '../../utils/string-utils';
+import { formatCommas } from '../../utils/number-utils';
 import { DonationHistoryType } from '../../types';
 
 type styleConfig = {
