@@ -23,6 +23,7 @@ import {
   marginDefault,
   bisectDate,
 } from './shared';
+import useRenderCount from '../../hooks/use-count-renders';
 
 const OptimizedComponent = withTooltip<AreaProps, TooltipData>(
   ({
@@ -39,6 +40,7 @@ const OptimizedComponent = withTooltip<AreaProps, TooltipData>(
     startYear,
     endYear,
   }: AreaProps & WithTooltipProvidedProps<TooltipData>) => {
+    useRenderCount('Optimized Graph Page');
     const startIndex = useMemo(() => {
       const startDate = new Date(startYear, 0);
       return bisectDate(appleStock, startDate);
@@ -106,7 +108,6 @@ const OptimizedComponent = withTooltip<AreaProps, TooltipData>(
       [showTooltip, stockValueScale, dateScale, stock]
     );
 
-    console.log('*** Optimized render');
     return (
       <>
         <h1>Optimized</h1>

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 function useDebounce<T>(value: T, delay = 500): T {
   // State and setters for debounced value
   const [debouncedValue, setDebouncedValue] = useState(value);
+
   useEffect(
     () => {
       // Update debounced value after delay

@@ -11,12 +11,12 @@ import {
   background,
   background2,
 } from './shared';
+import useRenderCount from '../../hooks/use-count-renders';
 
 export type AreaProps = {
   width: number;
   height: number;
   margin: { top: number; right: number; bottom: number; left: number };
-  // //   TODO: now types
   stockValueScale: any;
   innerWidth: any;
   dateScale: any;
@@ -34,7 +34,7 @@ const GraphOnlyComponent: React.FunctionComponent<AreaProps> = ({
   innerHeight,
   stock,
 }) => {
-  console.log('*** Optimized GraphOnlyComponent render');
+  useRenderCount('Optimized Graph Page - Graph only');
   return (
     <>
       <rect

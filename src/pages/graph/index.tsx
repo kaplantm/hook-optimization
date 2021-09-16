@@ -28,6 +28,7 @@ import {
   background2,
   bisectDate,
 } from './shared';
+import useRenderCount from '../../hooks/use-count-renders';
 
 export default withTooltip<AreaProps, TooltipData>(
   ({
@@ -42,6 +43,7 @@ export default withTooltip<AreaProps, TooltipData>(
     startYear,
     endYear,
   }: AreaProps & WithTooltipProvidedProps<TooltipData>) => {
+    useRenderCount('Unoptimized Graph Page');
     if (width < 10) return null;
 
     const startDate = new Date(startYear, 0);
@@ -89,7 +91,6 @@ export default withTooltip<AreaProps, TooltipData>(
       });
     };
 
-    console.log('*** NOT Optimized render');
     return (
       <div>
         <h1>NOT Optimized</h1>

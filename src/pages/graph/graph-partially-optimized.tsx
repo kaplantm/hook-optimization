@@ -28,6 +28,7 @@ import {
   background2,
   bisectDate,
 } from './shared';
+import useRenderCount from '../../hooks/use-count-renders';
 
 export default withTooltip<AreaProps, TooltipData>(
   ({
@@ -42,6 +43,7 @@ export default withTooltip<AreaProps, TooltipData>(
     startYear,
     endYear,
   }: AreaProps & WithTooltipProvidedProps<TooltipData>) => {
+    useRenderCount('Partially Optimized Graph Page');
     if (width < 10) return null;
 
     const stock = useMemo(() => {
@@ -105,7 +107,6 @@ export default withTooltip<AreaProps, TooltipData>(
       [showTooltip, stockValueScale, dateScale, stock]
     );
 
-    console.log('*** PartiallyOptimized render');
     return (
       <div>
         <h1>Partially Optimized</h1>
